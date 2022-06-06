@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  squid:
+    image: 'ubuntu/squid'
+    container_name: "squid"
+    ports:
+      - ${HOST_PORT}:51973
+    volumes:
+      - './squid.conf:/etc/squid/squid.conf'
+    restart: unless-stopped
