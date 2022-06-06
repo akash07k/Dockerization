@@ -22,14 +22,14 @@ services:
       - ${HOST_PORT}:80
 
     volumes:
-      - modules:/var/www/html/modules
-      - profiles:/var/www/html/profiles
-      - themes:/var/www/html/themes
-      - downloads:/var/www/html/downloads
+      - "modules:/var/www/html/modules"
+      - "profiles:/var/www/html/profiles"
+      - "themes:/var/www/html/themes"
+      - "downloads:/var/www/html/downloads"
       # this takes advantage of the feature in Docker that a new anonymous
       # volume (which is what we're creating here) will be initialized with the
       # existing content of the image at the same location
-      - sites:/var/www/html/sites
+      - "sites:/var/www/html/sites"
 
     restart: unless-stopped
 

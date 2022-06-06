@@ -7,8 +7,6 @@ services:
     ports:
       - ${HOST_PORT}:8080
 
-    restart: unless-stopped
-
     depends_on:
       - db
     environment:
@@ -22,6 +20,7 @@ services:
       - POLLING_FREQUENCY=${POLLING_FREQUENCY}
       - POLLING_PARSING_ERROR_LIMIT=${POLLING_PARSING_ERROR}
       - BASE_URL=${BASE_URL}
+    restart: unless-stopped
 
   db:
     image: postgres:latest
@@ -33,7 +32,7 @@ services:
 
     restart: unless-stopped
     volumes:
-      - db:/var/lib/postgresql/data
+      - "db:/var/lib/postgresql/data"
 volumes:
   db:  
 
