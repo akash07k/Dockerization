@@ -8,11 +8,12 @@ services:
         ports:
             - ${HOST_PORT}:80
 
-        volumes:
-            - "data:/data"
-
         environment:
             - ADMIN_TOKEN=${ADMIN_TOKEN}
+            - TZ="Asia/Kolkata"
+
+        volumes:
+            - "data:/data"
 
         restart: unless-stopped
 

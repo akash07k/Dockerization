@@ -10,6 +10,9 @@ services:
             - ${HOST_PORT_HTTP}:81
             - ${HOST_PORT_HTTPS}:443
 
+        environment:
+            - TZ="Asia/Kolkata"
+
         restart: unless-stopped
 
         volumes:

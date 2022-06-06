@@ -6,6 +6,10 @@ services:
     container_name: "squid"
     ports:
       - ${HOST_PORT}:51973
+
+    environment:
+      - TZ="Asia/Kolkata"
+
     volumes:
       - './squid.conf:/etc/squid/squid.conf'
     restart: unless-stopped

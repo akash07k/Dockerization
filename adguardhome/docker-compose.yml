@@ -19,6 +19,9 @@ services:
             - "5443:5443/tcp"
             - "5443:5443/udp"
 
+        environment:
+            - TZ="Asia/Kolkata"
+
         volumes:
             - "workdir:/opt/adguardhome/work"
             - "confdir:/opt/adguardhome/conf"
