@@ -1,0 +1,15 @@
+1. 
+Deactivate DNSStubListener and update DNS server address. Create a new file: /etc/systemd/resolved.conf.d/adguardhome.conf (create a /etc/systemd/resolved.conf.d directory if necessary) with the following content:
+[Resolve]
+DNS=127.0.0.1
+DNSStubListener=no
+2. 
+Specifying 127.0.0.1 as DNS server address is necessary because otherwise the nameserver will be 127.0.0.53 which doesn't work without DNSStubListener.
+3. 
+Activate another resolv.conf file:
+sudo mv /etc/resolv.conf /etc/resolv.conf.backup
+sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+4. 
+Restart DNSStubListener:
+systemctl reload-or-restart systemd-resolved
+
