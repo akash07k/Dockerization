@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  miniflux:
+    image: miniflux/miniflux:latest
+    container_name: "miniflux"
+    ports:
+      - ${HOST_PORT}:8080
+
+    restart: unless-stopped
+
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - FETCH_YOUTUBE_WATCH_TIME=${FETCH_YOUTUBE_WATCH_TIME}
+      - WORKER_POOL_SIZE=${WORKER_POOL_SIZE}
+      - POLLING_FREQUENCY=${POLLING_FREQUENCY}
+      - POLLING_PARSING_ERROR_LIMIT=${POLLING_PARSING_ERROR}
+      - BASE_URL=${BASE_URL}
+
+  db:
+    image: postgres:latest
+    container_name: "miniflux_postgres"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:  
+

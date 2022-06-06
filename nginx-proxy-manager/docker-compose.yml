@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    nginx-proxy-manager:
+        container_name: "nginx-proxy-manager"
+        image: "jc21/nginx-proxy-manager:latest"
+
+        ports:
+            - ${HOST_PORT_DEFAULT}:80
+            - ${HOST_PORT_HTTP}:81
+            - ${HOST_PORT_HTTPS}:443
+
+        restart: unless-stopped
+
+        volumes:
+            - "data:/data"
+            - "letsencrypt:/etc/letsencrypt"
+
+volumes:
+    data:
+    letsencrypt:
+
