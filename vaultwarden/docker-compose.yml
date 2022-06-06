@@ -6,13 +6,13 @@ services:
         image: 'vaultwarden/server:latest'
 
         ports:
-            - '8483:80'
+            - ${HOST_PORT}:80
 
         volumes:
             - "data:/data"
 
         environment:
-            ADMIN_TOKEN=${ADMIN_TOKEN}
+            - ADMIN_TOKEN=${ADMIN_TOKEN}
 
         restart: unless-stopped
 
