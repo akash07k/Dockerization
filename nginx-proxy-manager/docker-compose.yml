@@ -6,9 +6,10 @@ services:
         image: "jc21/nginx-proxy-manager:latest"
 
         ports:
-            - ${HOST_PORT_DEFAULT}:80
-            - ${HOST_PORT_HTTP}:81
+            - ${HOST_PORT_HTTP}:80
             - ${HOST_PORT_HTTPS}:443
+            - ${HOST_PORT_MAIN}:81
+
 
         environment:
             - TZ="Asia/Kolkata"
