@@ -15,3 +15,7 @@ sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 Restart DNSStubListener:
 sudo systemctl reload-or-restart systemd-resolved
 
+
+Allow ports:
+sudo ufw allow 53,80,443,3000,853,5443/tcp
+sudo ufw allow 53,67,68,443,853,784,8853,5443/udp
