@@ -1,17 +1,25 @@
 version: "3"
 services:
     kopia:
-        image: "kopia/kopia:latest"
+        image: kopia/kopia:latest
         container_name: "kopia"
-        ports:
-            - ${HOST_PORT}:80
-        volumes:
-            - "/var/run/docker.sock:/tmp/docker.sock:ro"
-            - "config/dir:/app/config"
-            - "cache/dir:/app/cache"
-
+        hostname: ${HOSTNAME}
         restart: unless-stopped
+        ports:
+            - ${HOST_PORT}:51515
         environment:
-            - KOPIA_PASSWORD=${KOPIA_PASSWORD}
+            - "KOPIA_PASSWORD=${KOPIA_PASSWORD}"
+            - "TZ=Asia/Kolkata"
+        volumes:
+            - "config:/app/config"
+            - "cache:/app/cache"
+            - "logs:/app/logs"
+            - "backup:/app/backup:ro"
+        entrypoint: ["/app/kopia", "server", "--insecure", "--address=0.0.0.0:51515", "--override-username=${USERNAME}@${HOSTNAME}", "--server-username=${USERNAME}@${HOSTNAME}", "--server-password=${KOPIA_PASSWORD}"]
 
+volumes:
+    config:
+    cache:
+    logs:
+    backup:
 
