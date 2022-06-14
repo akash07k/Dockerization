@@ -9,7 +9,6 @@ services:
             - "/var/run/docker.sock:/tmp/docker.sock:ro"
             - "config/dir:/app/config"
             - "cache/dir:/app/cache"
-            - '~/.config/rclone:/app/rclone'
 
         restart: unless-stopped
         environment:
