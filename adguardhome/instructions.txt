@@ -9,6 +9,8 @@ Specifying 127.0.0.1 as DNS server address is necessary because otherwise the na
 3. 
 Activate another resolv.conf file:
 sudo mv /etc/resolv.conf /etc/resolv.conf.backup
+
+sudo mkdir /etc/systemd/resolved.conf.d
 sudo cp adguardhome.conf /etc/systemd/resolved.conf.d/
 sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 4. 
