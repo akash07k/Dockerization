@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  linkding:
+  app:
     container_name: "${LD_CONTAINER_NAME:-linkding}"
     image: sissbruecker/linkding:latest
     ports:

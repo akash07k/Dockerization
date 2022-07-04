@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    vaultwarden:
+    app:
         container_name: "vaultwarden"
         image: 'vaultwarden/server:latest'
 

@@ -13,11 +13,11 @@
 version: '3'
 
 services:
-  drupal:
+  app:
     image: drupal:latest
     container_name: "drupal"
     depends_on:
-      - postgres
+      - db
     ports:
       - ${HOST_PORT}:80
 
@@ -36,9 +36,9 @@ services:
 
     restart: unless-stopped
 
-  postgres:
-    image: postgres:latest
-    container_name: "drupal_postgres"
+  db:
+    image: postgres:alpine
+    container_name: "db"
     environment:
         - POSTGRES_USER=${POSTGRES_USER}
         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

@@ -1,6 +1,6 @@
 version: "3"
 services:
-    kopia:
+    app:
         image: kopia/kopia:latest
         container_name: "kopia"
         hostname: ${HOSTNAME}

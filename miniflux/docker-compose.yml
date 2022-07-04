@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  miniflux:
+  app:
     image: miniflux/miniflux:latest
     container_name: "miniflux"
     ports:
