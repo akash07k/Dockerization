@@ -1,0 +1,15 @@
+{{ define "title_success" -}}
+✅ Successfully ran backup for nextcloud {{ .Config.BackupStopContainerLabel }}
+{{- end }}
+
+{{ define "body_success" -}}
+▶️ Start time: {{ .Stats.StartTime | formatTime }}
+⏹️ End time: {{ .Stats.EndTime | formatTime }}
+⌛ Took time: {{ .Stats.TookTime }}
+🔐 Locked time: {{ .Stats.LockedTime }}
+🛑 Stopped containers: {{ .Stats.Containers.Stopped }}/{{ .Stats.Containers.All }} ({{ .Stats.Containers.StopErrors }} errors)
+📛 Backup name: {{ .Stats.BackupFile.Name }}
+⚖️ Backup size: {{ .Stats.BackupFile.Size | formatBytesBin }} / {{ .Stats.BackupFile.Size | formatBytesDec }}
+🗑️ Pruned backups: {{ .Stats.Storages.Local.Pruned }}/{{ .Stats.Storages.Local.Total }} ({{ .Stats.Storages.Local.PruneErrors }} errors)
+
+{{- end }}
