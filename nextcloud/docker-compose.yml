@@ -28,10 +28,10 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 #      - nextcloud:/var/www/html
-      - apps:/var/www/html/custom_apps
+#      - apps:/var/www/html/custom_apps
       - config:/var/www/html/config
       - data:/var/www/html/data
-      - themes:/var/www/html/themes
+      - theme:/var/www/html/themes
 
     labels:
       - docker-volume-backup.stop-during-backup=${COMPOSE_PROJECT_NAME}
@@ -58,7 +58,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
 #      - nextcloud:/backup/nextcloud:ro
-      - apps:/backup/apps:ro
+#      - apps:/backup/apps:ro
       - config:/backup/config:ro
       - data:/backup/data:ro
       - theme:/backup/theme:ro
@@ -68,9 +68,9 @@ services:
 
 volumes:
 #  nextcloud:
-  apps:
+#  apps:
   config:
   data:
-  themes:
+  theme:
   db:
 
