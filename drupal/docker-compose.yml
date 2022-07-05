@@ -34,7 +34,7 @@ services:
       - "sites:/var/www/html/sites"
 
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - docker-volume-backup.stop-during-backup=${COMPOSE_PROJECT_NAME}
 
     restart: unless-stopped
 
@@ -49,7 +49,7 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-        - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
 
     labels:
       - docker-volume-backup.stop-during-backup=true
@@ -63,6 +63,7 @@ services:
 
     environment:
       - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+      - BACKUP_STOP_CONTAINER_LABEL=${COMPOSE_PROJECT_NAME}
 
     volumes:
       - /etc/timezone:/etc/timezone:ro
