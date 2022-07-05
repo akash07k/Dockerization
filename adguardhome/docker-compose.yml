@@ -17,11 +17,12 @@ services:
             - 5443:5443/tcp
             - 5443:5443/udp
 
-    environment:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - docker-volume-backup.stop-during-backup=true
 
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - "workdir:/opt/adguardhome/work"
       - "confdir:/opt/adguardhome/conf"
 
@@ -30,20 +31,18 @@ services:
   backup:
     image: offen/docker-volume-backup:latest
     restart: unless-stopped
+
     env_file: ./backup.env
     environment:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
 
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
       - workdir:/backup/workdir:ro
       - confdir:/backup/confdir:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # If you mount a local directory or volume to `/archive` a local
-      # copy of the backup will be stored there. You can override the
-      # location inside of the container by setting `BACKUP_ARCHIVE`.
-      # You can omit this if you do not want to keep local backups.
       - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
 
 volumes:

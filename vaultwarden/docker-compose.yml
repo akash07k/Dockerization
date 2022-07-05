@@ -1,20 +1,40 @@
 version: '3'
 
 services:
-    app:
-        image: 'vaultwarden/server:latest'
+  app:
+    image: 'vaultwarden/server:latest'
 
-        ports:
-            - ${HOST_PORT}:80
+    ports:
+      - ${HOST_PORT}:80
 
-        environment:
-            - ADMIN_TOKEN=${ADMIN_TOKEN}
-            - TZ="Asia/Kolkata"
+    environment:
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
 
-        volumes:
-            - "data:/data"
+    labels:
+      - docker-volume-backup.stop-during-backup=true
 
-        restart: unless-stopped
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - "data:/data"
+
+    restart: unless-stopped
+
+  backup:
+    image: offen/docker-volume-backup:latest
+    restart: unless-stopped
+    env_file: ./backup.env
+
+    environment:
+      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
+      - data:/backup/data:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
 
 volumes:
     data:

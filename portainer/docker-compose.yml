@@ -1,21 +1,39 @@
 version: "3"
 
 services:
-    app:
-        image: portainer/portainer-ce
+  app:
+    image: portainer/portainer-ce
 
-        ports:
-            - ${HOST_PORT_DEFAULT}:8000
-            - ${HOST_PORT_ADMIN}:9000
+    ports:
+      - ${HOST_PORT_DEFAULT}:8000
+      - ${HOST_PORT_ADMIN}:9000
 
-        environment:
-            - TZ="Asia/Kolkata"
+    labels:
+      - docker-volume-backup.stop-during-backup=true
 
-        restart: unless-stopped
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - "data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
-        volumes:
-            - "/var/run/docker.sock:/var/run/docker.sock"
-            - "data:/data"
+  backup:
+    image: offen/docker-volume-backup:latest
+    restart: unless-stopped
+    env_file: ./backup.env
+
+    environment:
+      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
+      - data:/backup/data:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
+
+    restart: unless-stopped
 
 volumes:
     data:

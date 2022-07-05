@@ -1,25 +1,43 @@
 version: '3'
 
 services:
-    app:
-        image: "jc21/nginx-proxy-manager:latest"
+  app:
+    image: "jc21/nginx-proxy-manager:latest"
 
-        ports:
-            - ${HOST_PORT_HTTP}:80
-            - ${HOST_PORT_HTTPS}:443
-            - ${HOST_PORT_MAIN}:81
+    ports:
+      - ${HOST_PORT_HTTP}:80
+      - ${HOST_PORT_HTTPS}:443
+      - ${HOST_PORT_MAIN}:81
 
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - "data:/data"
+      - "letsencrypt:/etc/letsencrypt"
 
-        environment:
-            - TZ="Asia/Kolkata"
+    labels:
+      - docker-volume-backup.stop-during-backup=true
 
-        restart: unless-stopped
+    restart: unless-stopped
 
-        volumes:
-            - "data:/data"
-            - "letsencrypt:/etc/letsencrypt"
+  backup:
+    image: offen/docker-volume-backup:latest
+    restart: unless-stopped
+    env_file: ./backup.env
+
+    environment:
+      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
+      - data:/backup/data:ro
+      - letsencrypt:/backup/letsencrypt:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
 
 volumes:
-    data:
-    letsencrypt:
+  data:
+  letsencrypt:
 

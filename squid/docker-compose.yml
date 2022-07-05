@@ -5,10 +5,26 @@ services:
     image: 'ubuntu/squid'
     ports:
       - ${HOST_PORT}:51973
-
-    environment:
-      - TZ="Asia/Kolkata"
+    labels:
+      - docker-volume-backup.stop-during-backup=false
 
     volumes:
       - './squid.conf:/etc/squid/squid.conf'
     restart: unless-stopped
+
+#  backup:
+#    image: offen/docker-volume-backup:latest
+#    restart: unless-stopped
+#    env_file: ./backup.env
+
+#    environment:
+#      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+
+#    volumes:
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+#      - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#      - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
+
+

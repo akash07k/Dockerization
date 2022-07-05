@@ -4,4 +4,5 @@
 .gitsecret/keys/random_seed
 !*.secret
 *backup.env
-*backup.env
+*/backup.env
+

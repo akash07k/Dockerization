@@ -5,17 +5,17 @@ services:
     image: postgres:alpine
     restart: unless-stopped
     volumes:
-      - db:/var/lib/postgresql
-    environment:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - db:/var/lib/postgresql
+    environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_ROOT_PASSWORD=${POSTGRES_ROOT_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
 
     labels:
-      - docker-volume-backup.stop-during-backup=trueee
+      - docker-volume-backup.stop-during-backup=true
 
   app:
     image: nextcloud:latest
@@ -25,6 +25,8 @@ services:
     links:
       - db
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - nextcloud:/var/www/html
 
     labels:
@@ -42,24 +44,20 @@ services:
     image: offen/docker-volume-backup:latest
     restart: unless-stopped
     env_file: ./backup.env
+
     environment:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
 
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
       - nextcloud:/backup/nextcloud:ro
       - db:/backup/db:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # If you mount a local directory or volume to `/archive` a local
-      # copy of the backup will be stored there. You can override the
-      # location inside of the container by setting `BACKUP_ARCHIVE`.
-      # You can omit this if you do not want to keep local backups.
       - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
 
 volumes:
   nextcloud:
   db:
-
-
 
