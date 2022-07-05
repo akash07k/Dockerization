@@ -7,7 +7,7 @@ services:
       - "${LD_HOST_PORT:-9090}:9090"
 
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - docker-volume-backup.stop-during-backup=${COMPOSE_PROJECT_NAME}
 
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -22,6 +22,7 @@ services:
 
     environment:
       - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+      - BACKUP_STOP_CONTAINER_LABEL=${COMPOSE_PROJECT_NAME}
 
     volumes:
       - /etc/timezone:/etc/timezone:ro

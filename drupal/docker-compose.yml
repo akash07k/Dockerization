@@ -52,7 +52,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - docker-volume-backup.stop-during-backup=${COMPOSE_PROJECT_NAME}
 
     restart: unless-stopped
 

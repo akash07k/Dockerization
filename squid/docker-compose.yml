@@ -6,7 +6,7 @@ services:
     ports:
       - ${HOST_PORT}:51973
     labels:
-      - docker-volume-backup.stop-during-backup=false
+      - docker-volume-backup.stop-during-backup=${COMPOSE_PROJECT_NAME}
 
     volumes:
       - './squid.conf:/etc/squid/squid.conf'
@@ -19,6 +19,7 @@ services:
 
 #    environment:
 #      - AWS_S3_PATH=${COMPOSE_PROJECT_NAME}
+#      - BACKUP_STOP_CONTAINER_LABEL=${COMPOSE_PROJECT_NAME}
 
 #    volumes:
 #      - /etc/timezone:/etc/timezone:ro
