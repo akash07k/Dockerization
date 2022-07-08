@@ -4,7 +4,7 @@ services:
   app:
     image: sissbruecker/linkding:latest
     ports:
-      - "${LD_HOST_PORT:-9090}:9090"
+      - "${HOST_PORT:-9090}:9090"
 
     labels:
       - docker-volume-backup.stop-during-backup=${COMPOSE_PROJECT_NAME}
@@ -12,7 +12,7 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - "${LD_HOST_DATA_DIR:-./data}:/etc/linkding/data"
+      - "data:/etc/linkding/data"
     restart: unless-stopped
 
   backup:
@@ -28,7 +28,9 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./notifications.tmpl:/etc/dockervolumebackup/notifications.d/notifications.tmpl
-      - ${LD_HOST_DATA_DIR:/backup/linkding:ro
+      - data:/backup/linkding:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /${HOME}/backups/${COMPOSE_PROJECT_NAME}:/archive
 
+volumes:
+  data:

@@ -11,7 +11,7 @@ Activate another resolv.conf file:
 sudo mv /etc/resolv.conf /etc/resolv.conf.backup
 
 sudo mkdir /etc/systemd/resolved.conf.d
-sudo cp adguardhome.conf /etc/systemd/resolved.conf.d/
+sudo cp /home/ubuntu/adguardhome.conf /etc/systemd/resolved.conf.d/
 sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 4. 
 Restart DNSStubListener:
